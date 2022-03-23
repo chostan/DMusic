@@ -1,5 +1,5 @@
 // pages/home-music/index.js
-import { rankingStore } from '../../store/index'
+import { rankingStore, rankingMap } from '../../store/index'
 
 import { getBanners, getSongMenu } from '../../service/api_music'
 import queryRect from '../../utils/query-rect'
@@ -62,6 +62,22 @@ Page({
     throttleQueryRect('.swiper-image').then(res => {
       const rect = res[0]
       this.setData({ swiperHeight: rect.height })
+    })
+  },
+
+  handleMoreClick: function() {
+    this.navigateToDetailSongsPage('hotRanking')
+  },
+
+  handleRankingItemClick: function(event) {
+    const idx = event.currentTarget.dataset.idx
+    const rankingName = rankingMap[idx]
+    this.navigateToDetailSongsPage(rankingName)
+  },
+
+  navigateToDetailSongsPage: function(rankingName) {
+    wx.navigateTo({
+      url: `/pages/detail-songs/index?ranking=${rankingName}&type=rank`,
     })
   },
 
