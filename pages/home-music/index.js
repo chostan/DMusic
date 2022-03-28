@@ -1,11 +1,11 @@
 // pages/home-music/index.js
-import { rankingStore, rankingMap } from '../../store/index'
+import { rankingStore, rankingMap, playerStore } from '../../store/index'
 
 import { getBanners, getSongMenu } from '../../service/api_music'
 import queryRect from '../../utils/query-rect'
 import throttle from '../../utils/throttele'
 
-const throttleQueryRect = throttle(queryRect)
+const throttleQueryRect = throttle(queryRect, 1000, { trailing: true })
 
 Page({
   data: {
@@ -14,24 +14,24 @@ Page({
     hotSongMenu: [],
     recommendSongMenu: [],
     recommendSongs: [],
-    rankings: {0: {}, 2: {}, 3: {}}
+    rankings: {0: {}, 2: {}, 3: {}},
+
+    currentSong: {},
+    isPlaying: false,
+    playAnimState: 'paused' 
   },
 
   onLoad: function (options) {
+    // playerStore.dispatch('playMusicWithSongIdAction', { id: 1842025914})
+
     // 获取页面数据
     this.getPageData()
 
     // 发起共享数据的请求
     rankingStore.dispatch('getRankingDataAction')
     // 从store获取共享数据
-    rankingStore.onState('hotRanking', (res) => {
-      if(!res.tracks) return
-      const recommendSongs = res.tracks.slice(0, 6)
-      this.setData({ recommendSongs })
-    })
-    rankingStore.onState('newRanking', this.getRankingHandler(0))
-    rankingStore.onState('originRanking', this.getRankingHandler(2))
-    rankingStore.onState('upRanking', this.getRankingHandler(3))
+    this.setupPlayerStoreListener()
+    
   },
 
   // 网络请求
@@ -53,7 +53,7 @@ Page({
   // 事件处理
   handleSearchClick: function () {
     wx.navigateTo({
-      url: '/pages/detail-search/index',
+      url: '/packageDetail/pages/detail-search/index',
     })
   },
 
@@ -77,12 +77,53 @@ Page({
 
   navigateToDetailSongsPage: function(rankingName) {
     wx.navigateTo({
-      url: `/pages/detail-songs/index?ranking=${rankingName}&type=rank`,
+      url: `/packageDetail/pages/detail-songs/index?ranking=${rankingName}&type=rank`,
     })
   },
 
+  handleSongItemClick: function(event) {
+    const index = event.currentTarget.dataset.index
+    playerStore.setState('playListSongs', this.data.recommendSongs)
+    playerStore.setState('playListIndex', index)
+  },
+
+  handlePlayBtnClick: function() {
+    playerStore.dispatch('changeMusicPlayStatusAction', !this.data.isPlaying)
+  },
+
+  handlePlayBarClick: function() {
+    wx.navigateTo({
+      url: '/packagePlayer/pages/music-player/index?id=' + this.data.currentSong.id,
+    })
+  },
+
+  // 卸载页面
   onUnload: function () {
     // rankingStore.offState('newRanking', this.getNewRankingHandler)
+  },
+
+  setupPlayerStoreListener: function() {
+    // 1.排行榜监听
+    rankingStore.onState("hotRanking", (res) => {
+      if (!res.tracks) return
+      const recommendSongs = res.tracks.slice(0, 6)
+      this.setData({ recommendSongs })
+    })
+    rankingStore.onState("newRanking", this.getRankingHandler(0))
+    rankingStore.onState("originRanking", this.getRankingHandler(2))
+    rankingStore.onState("upRanking", this.getRankingHandler(3))
+
+    // 2.播放器监听
+    playerStore.onStates(['currentSong', 'isPlaying'], ({
+      currentSong,
+      isPlaying
+    }) => {
+      if(currentSong) this.setData({ currentSong })
+      if(isPlaying !== undefined) this.setData({ 
+        isPlaying, 
+        playAnimState: isPlaying ? 'running': 'paused' 
+      })
+    })
   },
 
   getRankingHandler: function(idx) {
@@ -99,16 +140,4 @@ Page({
       })
     }
   }
-  // getNewRankingHandler: function(res) {
-  //   if(Object.keys(res).length === 0) return
-  //   const name = res.name
-  //   const coverImgUrl = res.coverImgUrl
-  //   const songList = res.tracks.slice(0, 3)
-  //   const rankingObj = {name, coverImgUrl, songList}
-  //   const originRankings = [...this.data.rankings]
-  //   originRankings.push(rankingObj)
-  //   this.setData({
-  //     rankings: originRankings
-  //   })
-  // }
 })
