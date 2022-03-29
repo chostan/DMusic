@@ -2,6 +2,7 @@
 // import { getSongDetail, getSongLyric } from '../../service/api_player'
 // import { parseLyric } from '../../utils/parse-lyric'
 import { audioContext, playerStore } from '../../../store/index'
+import showToast from '../../../utils/toast'
 
 const playModeNames = ['order', 'repeat', 'random']
 
@@ -35,7 +36,7 @@ Page({
     const id = options.id
     this.setData({ id })
 
-    // playerStore.dispatch('playMusicWithSongIdAction', { id })
+    // playerStore.dispatch('playMusicWithSongIdAction', { id: 1842025914 })
 
     // 2.根据id获取歌曲信息
     // this.getPageData(id)
@@ -133,6 +134,9 @@ Page({
     // 3.设置context播放currentTime位置的音乐
     // audioContext.pause()
     audioContext.seek(currentTime / 1000)
+    audioContext.onCanplay(() => {
+      audioContext.play()
+    })
 
     // 4.记录最新的sliderValue并且将isSliderChanging设置为false
     this.setData({ sliderValue: value, isSliderChanging: false })
@@ -161,6 +165,11 @@ Page({
   handleNextBtnClick: function() {
     playerStore.dispatch('changeNewMusicAction')
   },
+
+  handleShowSongList: function() {
+    showToast('正在开发中')
+  },
+
 
   // ================   数据监听   ================
   handleCurrentMusicListener: function({currentSong, durationTime, lyricInfos}) {
@@ -211,7 +220,7 @@ Page({
   },
 
   onUnload: function () {
-    playerStore.offState(
+    playerStore.offStates(
       ['currentSong', 'durationTime', 'lyricInfos'], 
       this.handleCurrentMusicListener
     )

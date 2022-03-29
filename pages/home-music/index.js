@@ -43,10 +43,10 @@ Page({
     })
 
     getSongMenu().then(res => {
-      this.setData({hotSongMenu: res.playlists})
+      this.setData({ hotSongMenu: res.playlists })
     })
     getSongMenu('华语').then(res => {
-      this.setData({recommendSongMenu: res.playlists})
+      this.setData({ recommendSongMenu: res.playlists })
     })
   },
 

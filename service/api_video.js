@@ -1,7 +1,7 @@
-import dRequset from './index'
+import dRequest from './index'
 
 export function getTopMV(offset, limit = 10) {
-  return dRequset.get('/top/mv', {
+  return dRequest.get('/top/mv', {
     offset,
     limit
   })
@@ -12,7 +12,7 @@ export function getTopMV(offset, limit = 10) {
  * @param {number} id MV的id 
  */
 export function getMVURL(id) {
-  return dRequset.get('/mv/url', {
+  return dRequest.get('/mv/url', {
     id
   })
 }
@@ -22,7 +22,7 @@ export function getMVURL(id) {
  * @param {number} mvid MV的id 
  */
 export function getMVDetail(mvid) {
-  return dRequset.get('/mv/detail', {
+  return dRequest.get('/mv/detail', {
     mvid
   })
 }
@@ -31,8 +31,11 @@ export function getMVDetail(mvid) {
  * 请求MV相关视频
  * @param {number} id MV的id 
  */
-export function getRelatedVideo(id) {
-  return dRequset.get('/related/allvideo', {
-    id
-  })
+// export function getRelatedVideo(id) {
+//   return dRequset.get('/related/allvideo', {
+//     id
+//   })
+// }
+export function getRelatedVideo(mvid) {
+  return dRequest.get('/simi/mv', { mvid })
 }

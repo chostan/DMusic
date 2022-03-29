@@ -1,20 +1,24 @@
-import dRequset from './index'
 import dRequest from './index'
 
 export function getBanners() {
-  return dRequset.get('/banner', {
+  return dRequest.get('/banner', {
     type: 2
   })
 }
 
 export function getRankings(idx) {
-  return dRequset.get('/top/list', {
+  return dRequest.get('/top/list', {
     idx
   })
 }
 
-export function getSongMenu(cat="全部", limit=6, offset=0) {
-  return dRequset.get('/top/playlist', {
+// 获取分类
+export function getSongMenuTags() {
+  return dRequest.get('/playlist/hot')
+}
+
+export function getSongMenu(cat = "全部", limit = 6, offset = 0) {
+  return dRequest.get('/top/playlist', {
     cat,
     limit,
     offset
@@ -22,7 +26,7 @@ export function getSongMenu(cat="全部", limit=6, offset=0) {
 }
 
 export function getSongMenuDetail(id) {
-  return dRequset.get('/playlist/detail/dynamic', {
+  return dRequest.get('/playlist/detail/dynamic', {
     id
   })
 }

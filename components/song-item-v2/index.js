@@ -37,5 +37,12 @@ Component({
       // 2.播放歌曲
       playerStore.dispatch('playMusicWithSongIdAction', { id })
     }
+
+    // handleMvClick(e) {
+    //   const mv = e.currentTarget.dataset.mv
+    //   wx.navigateTo({
+    //     url: `/packageDetail/pages/detail-video/index?id=${mv}`
+    //   })
+    // }
   }
 })

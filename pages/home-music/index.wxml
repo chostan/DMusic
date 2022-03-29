@@ -13,6 +13,7 @@
         indicator-dots
         autoplay
         circular
+        indicator-active-color="#fff"
         style="height: {{swiperHeight}}px;"
         >
   <block wx:for="{{banners}}" wx:key="bannerId">

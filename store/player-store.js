@@ -1,9 +1,10 @@
 import { HYEventStore } from 'hy-event-store'
 import { getSongDetail, getSongLyric } from '../service/api_player'
 import { parseLyric } from '../utils/parse-lyric'
+import showToast from '../utils/toast'
 
-const audioContext = wx.createInnerAudioContext()  // audioContext
-// const audioContext = wx.getBackgroundAudioManager()
+// const audioContext = wx.createInnerAudioContext()  // audioContext
+const audioContext = wx.getBackgroundAudioManager()
 
 const playerStore = new HYEventStore({
   state: {
@@ -119,21 +120,34 @@ const playerStore = new HYEventStore({
         ctx.isPlaying = false
         ctx.isStoping = true
       })
+      // 仅在ios生效
+      audioContext.onNext(() => {
+        this.dispatch('changeNewMusicAction')
+      })
+      // 仅在ios生效
+      audioContext.onPrev(() => {
+        this.dispatch('changeNewMusicAction', false)
+      })
+      // 播放失败
+      audioContext.onError(() => {
+        console.log('播放失败')
+        showToast('播放失败,该歌曲为vip歌曲', 'none', 2000)
+      })
     },
 
     changeMusicPlayStatusAction(ctx, isPlaying = true) {
       ctx.isPlaying = isPlaying
       if(ctx.isPlaying && ctx.isStoping) {
         audioContext.src = `https://music.163.com/song/media/outer/url?id=${ctx.id}.mp3`
-        audioContext.title = currentSong.name
-        // audioContext.startTime = ctx.currentTime/1000
-        // ctx.isStoping = false
-      }
-      ctx.isPlaying ? audioContext.play(): audioContext.pause()
-      if (ctx.isStoping) {
-        audioContext.seek(ctx.currentTime)
+        audioContext.title = ctx.currentSong.name
+        audioContext.startTime = ctx.currentTime / 1000
         ctx.isStoping = false
       }
+      ctx.isPlaying ? audioContext.play(): audioContext.pause()
+      // if (ctx.isStoping) {
+      //   audioContext.seek(ctx.currentTime)
+      //   ctx.isStoping = false
+      // }
     },
 
     changeNewMusicAction(ctx, isNext = true) {

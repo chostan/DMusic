@@ -58,7 +58,10 @@
              src="/packagePlayer/assets/images/player/play_next.png"
              bindtap="handleNextBtnClick">
       </image>
-      <image class="btn btn-music" src="/packagePlayer/assets/images/player/play_music.png"></image>
+      <image class="btn btn-music" 
+             src="/packagePlayer/assets/images/player/play_music.png"
+             bindtap="handleShowSongList">
+      </image>
     </view>
   </swiper-item>
   <swiper-item class="lyric">
@@ -75,3 +78,4 @@
     </scroll-view>
   </swiper-item>
 </swiper>
+

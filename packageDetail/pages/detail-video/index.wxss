@@ -7,23 +7,28 @@ page {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 9999999;
 }
 
-.info {
-  padding: 30rpx;
+.bottom-container {
+  padding: 15px;
 }
 
-.info .title {
+.mvInfo {
+  margin-bottom: 20px;
+}
+
+.mvInfo .title {
   font-weight: 700;
 }
 
-.info .desc, .info .other {
-  font-size: 24rpx;
+.mvInfo .desc, .mvInfo .other {
+  font-size: 28rpx;
   margin-top: 10rpx;
   color: #666;
 }
 
 /* 相关视频 */
-.recommend {
-  padding: 30rpx;
+.recommend .title {
+  font-weight: 700;
 }

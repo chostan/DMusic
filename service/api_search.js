@@ -1,4 +1,3 @@
-import dRequset from './index'
 import dRequest from './index'
 
 export function getSearchHot() {
@@ -6,14 +5,16 @@ export function getSearchHot() {
 }
 
 export function getSearchSuggest(keywords) {
-  return dRequset.get('/search/suggest', {
+  return dRequest.get('/search/suggest', {
     keywords,
     type: 'mobile'
   })
 }
 
-export function getSearchResult(keywords) {
-  return dRequset.get('/search', {
-    keywords
+export function getSearchResult(keywords, offset = 0, limit = 30) {
+  return dRequest.get('/search', {
+    keywords,
+    offset,
+    limit
   })
 }

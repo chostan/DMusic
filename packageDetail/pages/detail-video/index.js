@@ -14,15 +14,16 @@ Page({
     mvURLInfo: {},
     mvDetail: {},
     relatedVideos: [],
-    danmuList: [{
-      text: '第 1s 出现的弹幕',
-      color: '#ff0000',
-      time: 1
-    }, {
-      text: '第 3s 出现的弹幕',
-      color: '#ff00ff',
-      time: 3
-    }],
+    danmuList: []
+    // danmuList: [{
+    //   text: '第 1s 出现的弹幕',
+    //   color: '#ff0000',
+    //   time: 1
+    // }, {
+    //   text: '第 3s 出现的弹幕',
+    //   color: '#ff00ff',
+    //   time: 3
+    // }],
   },
 
   /**
@@ -36,6 +37,7 @@ Page({
     this.getPageData(id)
   },
 
+  // 网络请求
   getPageData: function (id) {
     //1. 请求播放地址
     getMVURL(id).then(res => {
@@ -52,8 +54,15 @@ Page({
     // 3.请求相关视频
     getRelatedVideo(id).then(res => {
       this.setData({
-        relatedVideos: res.data
+        relatedVideos: res.mvs
       })
     })
+  },
+
+  // 事件处理
+  handleVideoItemClick: function(event) {
+    const id = event.currentTarget.dataset.item.id
+    // 重新发送请求
+    this.getPageData(id)
   }
 })

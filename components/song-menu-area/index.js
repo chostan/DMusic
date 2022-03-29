@@ -30,6 +30,12 @@ Component({
       wx.navigateTo({
         url: `/packageDetail/pages/detail-songs/index?id=${item.id}&type=menu`,
       })
+    },
+
+    handleHeaderClick: function() {
+      wx.navigateTo({
+        url: '/packageDetail/pages/detail-menu/index'
+      })
     }
   }
 })

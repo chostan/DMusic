@@ -1,5 +1,6 @@
 // pages/home-video/index.js
 import { getTopMV } from '../../service/api_video'
+import showToast from '../../utils/toast'
 
 Page({
   data: {
@@ -13,7 +14,10 @@ Page({
   // 封装网络请求的方法
   getTopMVData: async function(offset) {
     // 判断是否可以请求
-    if(!this.data.hasMore && offset !== 0) return
+    if(!this.data.hasMore && offset !== 0) {
+      showToast('已显示最新内容')
+      return
+    }
 
     // 展示加载动画
     wx.showNavigationBarLoading()

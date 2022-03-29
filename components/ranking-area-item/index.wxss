@@ -7,7 +7,9 @@
   overflow: hidden;
   margin-bottom: 20rpx;
   /* width: 355px; */
-  width: 710rpx;
+  width: 100%;
+  height: 240rpx;
+  box-sizing: border-box;
 }
 
 .content {
@@ -28,15 +30,14 @@
 }
 
 .content-list-item {
-  color: #333;
-  margin-top: 6rpx;
+  /* color: #333; */
+  margin-top: 10rpx;
   width: 100%;
 
   display: inline-block;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  text-emphasis: none;
 }
 
 .content-list-item .singer {
@@ -45,7 +46,7 @@
 
 .album {
   position: relative;
-  width: 220rpx;
+  width: 240rpx;
   display: flex;
 }
 
@@ -58,7 +59,7 @@
 .album .play-counter {
   position: absolute;
   right: 0;
-  bottom: 0rpx;
+  bottom: 0;
   color: #fff;
   font-size: 22rpx;
   border-radius: 12rpx;
