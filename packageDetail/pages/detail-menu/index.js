@@ -37,7 +37,7 @@ Page({
   handleItemClick(e) {
     const id = e.currentTarget.dataset.item.id
     wx.navigateTo({
-      url: `/pages/detail-songs/index?id=${id}&type=menu`
+      url: `/packageDetail/pages/detail-songs/index?id=${id}&type=menu`
     })
   },
 
